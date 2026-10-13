@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## 2.0 · Descenso
+- Nuevo modo roguelike **Descenso**: 9 pisos (una capa del PC cada uno) con mapa ramificado tipo Slay the Spire.
+- Nodos de oleada, élite, mercado, reparación, evento y jefe. Jefe a mitad de camino y **Procesador Maestro** como jefe final con 3 fases.
+- 23 mejoras (espada, iconos, supervivencia y riesgo), 6 sinergias, créditos y eventos con riesgo.
+- Nuevo sprite del Procesador Maestro.
+- Tienda ampliada: 4 estelas nuevas, 5 hojas de espada (también visibles al jugar con el dedo), 6 escritorios propios por épocas y mejoras permanentes.
+- 4 logros nuevos y récord de descenso.
+
 ## 1.2
 - Reacción al cortar: estelas de corte, manchas de píxeles que quedan en el fondo, partículas propias de cada icono, anillos de onda y micro-pausa en golpes importantes.
 - Los power-ups se notan: Tiempo lento (tinte azul y cuenta atrás), Antivirus (rayos hacia cada virus) y Ctrl+Z (rebobinado amarillo).

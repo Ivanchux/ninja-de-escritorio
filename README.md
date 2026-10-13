@@ -5,7 +5,7 @@
 # 🗡️ Ninja de Escritorio
 
 **Un Fruit Ninja con iconos de ordenador retro.**
-Corta carpetas, disquetes y CD-ROM, esquiva virus y pantallazos azules, derrota jefes de malware y rompe el PC capa a capa hasta llegar al chip.
+Corta carpetas, disquetes y CD-ROM, esquiva virus y pantallazos azules y derrota jefes de malware. En el nuevo modo **Descenso** eliges tu camino, coleccionas mejoras y rompes el PC capa a capa hasta enfrentarte al Procesador Maestro.
 
 [![Jugar](https://img.shields.io/badge/▶_JUGAR_AHORA-008080?style=for-the-badge)](https://ivanchux.github.io/ninja-de-escritorio/)
 ![HTML5](https://img.shields.io/badge/HTML5-Canvas-e34f26?style=flat-square&logo=html5&logoColor=white)
@@ -20,7 +20,7 @@ Corta carpetas, disquetes y CD-ROM, esquiva virus y pantallazos azules, derrota 
 
 ## 📑 Índice
 
-[Qué es](#-qué-es) · [Capturas](#-capturas) · [En movimiento](#-en-movimiento) · [Cómo se juega](#-cómo-se-juega) · [El PC que se rompe](#-el-pc-que-se-rompe) · [Efectos y power-ups](#-efectos-y-power-ups) · [Jefes](#-jefes) · [Tienda y logros](#-tienda-y-logros) · [Los 38 iconos](#-los-38-iconos) · [Ejecutar y publicar](#-ejecutar-y-publicar) · [Detalles técnicos](#-detalles-técnicos) · [Estructura](#-estructura-del-repositorio) · [Licencia](#-licencia)
+[Qué es](#-qué-es) · [Capturas](#-capturas) · [En movimiento](#-en-movimiento) · [Cómo se juega](#-cómo-se-juega) · [Modo Descenso](#-modo-descenso-roguelike) · [El PC que se rompe](#-el-pc-que-se-rompe) · [Efectos y power-ups](#-efectos-y-power-ups) · [Jefes](#-jefes) · [Personalización](#-personalización-y-logros) · [Los 38 iconos](#-los-38-iconos) · [Ejecutar y publicar](#-ejecutar-y-publicar) · [Detalles técnicos](#-detalles-técnicos) · [Estructura](#-estructura-del-repositorio) · [Licencia](#-licencia)
 
 ## 🖥️ Qué es
 
@@ -75,6 +75,61 @@ Ninja de Escritorio es un juego de navegador en el que los objetos que vuelan so
 
 </div>
 
+## 🗺️ Modo Descenso (roguelike)
+
+Una partida es **un viaje de la pantalla al chip**. Hay 9 pisos, uno por cada capa del PC, y solo tienes una vida.
+
+<div align="center">
+
+| El mapa | Eliges una mejora | Jefe final |
+|:---:|:---:|:---:|
+| <img src="docs/mapa.png" width="300"> | <img src="docs/recompensa.png" width="300"> | <img src="docs/jefe-final.png" width="300"> |
+
+<img src="docs/gifs/movil-descenso.gif" height="420"> &nbsp; <img src="docs/gifs/movil-jefe-final.gif" height="420">
+
+<img src="docs/gifs/pc-descenso.gif" width="600">
+
+</div>
+
+### Cómo funciona
+
+- **Mapa ramificado, como en Slay the Spire.** En cada piso eliges entre 2 o 3 nodos conectados con el anterior. Cada camino tiene un riesgo distinto.
+- **Estabilidad y créditos.** La estabilidad no se rellena entre oleadas. Los créditos (que ganas jugando) sirven para comprar mejoras en el mercado.
+- **Jefe a mitad (piso 5) y jefe final (piso 9).** El jefe final es el **Procesador Maestro**, con **3 fases**: más proyectiles, abanicos de virus y un colapso térmico.
+
+| Nodo | Qué pasa |
+|:-:|---|
+| **O** Oleada | Alcanza los puntos que pide el piso y elige 1 de 3 mejoras. |
+| **E** Élite | Oleada más difícil y más larga. Da una mejora **rara**. |
+| **$** Mercado | Compra mejoras o repara con tus créditos. |
+| **+** Reparación | Recupera estabilidad u optimiza (elige una mejora). |
+| **?** Evento | Decisiones con riesgo: un pendrive desconocido, una ventana emergente, una copia de seguridad… |
+| **J** Jefe | Pelea con un jefe y llévate un botín raro. |
+
+### 23 mejoras
+
+Cada mejora tiene una categoría y puedes acumular copias.
+
+- **Espada:** Hoja larga, Corte en cruz, Onda de choque, Ráfaga, Racha larga, Reflejos.
+- **Iconos:** Pepitas, Cadena explosiva, Virus mascota, Antivirus residente, Minero de bytes, Interés compuesto.
+- **Supervivencia:** Disco de respaldo, Cortafuegos, Autoreparación, Sandbox, Colchón de RAM, Punto de restauración, Segundo aliento.
+- **Riesgo y recompensa:** Desbordamiento, Pacto del adware, Overclock, Todo o nada.
+
+### 6 sinergias
+
+Si juntas dos mejoras concretas se activa un bono extra con nombre:
+
+| Sinergia | Mejoras | Efecto |
+|---|---|---|
+| **Katana** | Hoja larga + Corte en cruz | El corte en cruz llega un 50% más lejos |
+| **Servidor redundante** | Disco de respaldo + Cortafuegos | El cortafuegos absorbe un virus más |
+| **Inmunizado** | Virus mascota + Sandbox | Cortar un virus te cura un 4% |
+| **Fiebre del oro** | Pepitas + Minero de bytes | Cada dorado da 4 créditos |
+| **Cadena crítica** | Onda de choque + Cadena explosiva | Las explosiones llegan un 60% más lejos |
+| **Contrato de riesgo** | Pacto del adware + Overclock | Los puntos valen un 25% más |
+
+Con los **bytes** que ganas en cada descenso compras **mejoras permanentes**: más estabilidad inicial, créditos de arranque y relanzamientos de mejoras.
+
 ## 🎮 Cómo se juega
 
 Desliza el ratón o el dedo para **cortar los iconos** que saltan por la pantalla.
@@ -88,6 +143,7 @@ Desliza el ratón o el dedo para **cortar los iconos** que saltan por la pantall
 
 ### Modos
 
+- **Descenso:** el modo roguelike. Está explicado [más abajo](#-modo-descenso-roguelike).
 - **Clásico:** tienes una barra de **estabilidad**. Cada icono bueno que se cae resta un 10 %. Cortar un virus resta un 30 %. Subir de nivel recupera un 20 %. Si llega a 0 aparece el pantallazo azul.
 - **Contrarreloj:** 60 segundos. Cada virus resta 3 s y Ctrl+Z suma 4 s.
 
@@ -137,7 +193,7 @@ Cada corte tiene **reacción visual**:
 
 ## 👾 Jefes
 
-Cada 5 niveles aparece un jefe con **sprite propio de 48×48** que lanza iconos peligrosos. Hay que golpearlo varias veces antes de que escape. Si se va, pierdes estabilidad.
+Cada 5 niveles (en Clásico y Contrarreloj) aparece un jefe con **sprite propio de 48×48** que lanza iconos peligrosos. Hay que golpearlo varias veces antes de que escape. Si se va, pierdes estabilidad.
 
 <div align="center">
 <img src="docs/jefes.png" width="720">
@@ -145,14 +201,22 @@ Cada 5 niveles aparece un jefe con **sprite propio de 48×48** que lanza iconos 
 
 **Rey Virus · Caballo de Troya · Ransomware · Pantallazo Gigante · Gusano Mayor · Adware Infinito**
 
-## 🛒 Tienda y logros
+Y en lo más profundo del PC espera el jefe final, el **Procesador Maestro** (abajo a la derecha), que solo aparece en el modo Descenso.
+
+## 🎨 Personalización y logros
 
 Cada partida te da **bytes** para comprar:
 
-- **Estelas:** Blanca, Neón, Fuego, Arcoíris y Código.
-- **Escritorios:** Clásico (cambia de color con cada nivel), Medianoche, Atardecer, Algodón y Matriz.
+- **9 estelas:** Blanca, Neón, Fuego, Arcoíris, Código, Hielo, Oro, Vacío y Píxeles.
+- **5 hojas de espada:** Espada de acero, Katana negra, Lápiz óptico, Destornillador y Sable láser. Cambian el cursor en PC y la hoja que ves al deslizar el dedo en el móvil.
+- **11 escritorios:** Clásico (cambia de color con cada nivel), Medianoche, Atardecer, Algodón, Matriz y seis fondos propios inspirados en distintas épocas: **Pradera, Cielo de nubes, Espacio, Aurora, Sintonía retro y Burbujas**.
+- **Mejoras permanentes** para el modo Descenso.
 
-Hay **14 logros** (Primer corte, Racha, Cazador de oro, Cazavirus, Superusuario…) y una tabla con tus mejores partidas.
+<div align="center">
+<img src="docs/escritorios.png" width="720">
+</div>
+
+Hay **18 logros** (Primer corte, Racha, Cazador de oro, Cazavirus, Hasta el chip, Descenso completado…) y una tabla con tus mejores partidas de cada modo.
 
 Además hay música chiptune generada con Web Audio (más tensa en los jefes), efectos de sonido, vibración en móvil y un menú de ajustes para desactivarlos.
 
@@ -191,7 +255,8 @@ python3 -m http.server 8000   # http://localhost:8000
 ## 🔧 Detalles técnicos
 
 - **Canvas 2D** con bucle `requestAnimationFrame` y escalado por densidad de píxeles.
-- **Pixel art procedural:** cada icono se dibuja por código en un lienzo de 32×32 (los jefes en 48×48) y se escala sin suavizado.
+- **Pixel art procedural:** cada icono se dibuja por código en un lienzo de 32×32 (los jefes en 48×48), y los escritorios se pintan a baja resolución. Todo se escala sin suavizado.
+- **Modo Descenso:** mapa generado al azar y dibujado en SVG, mejoras que modifican un objeto de modificadores del motor y sinergias que se detectan solas.
 - **Entrada unificada** con *pointer events*, válida para ratón, táctil y lápiz. El corte es una intersección segmento-círculo.
 - **Fondo por capas:** 9 escenas generadas por código con semilla fija, pintadas a baja resolución y escaladas sin suavizar. Es ligero en móviles.
 - **Audio:** Web Audio API (osciladores), sin archivos de sonido.
@@ -214,7 +279,10 @@ ninja-de-escritorio/
 
 ## 🗺️ Ideas futuras
 
-- [ ] Jefe final propio para la capa del chip
+- [x] Jefe final propio para la capa del chip
+- [x] Modo roguelike con mapa y mejoras
+- [ ] Descenso diario con semilla fija
+- [ ] Reliquias de élite y más eventos
 - [ ] Ranking online
 - [ ] Tutorial interactivo para móvil
 - [ ] Más escritorios y estelas
