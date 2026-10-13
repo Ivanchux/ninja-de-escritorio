@@ -20,7 +20,7 @@ Corta carpetas, disquetes y CD-ROM, esquiva virus y pantallazos azules, derrota 
 
 ## 📑 Índice
 
-[Qué es](#-qué-es) · [Capturas](#-capturas) · [Cómo se juega](#-cómo-se-juega) · [El PC que se rompe](#-el-pc-que-se-rompe) · [Efectos y power-ups](#-efectos-y-power-ups) · [Jefes](#-jefes) · [Tienda y logros](#-tienda-y-logros) · [Los 38 iconos](#-los-38-iconos) · [Ejecutar y publicar](#-ejecutar-y-publicar) · [Detalles técnicos](#-detalles-técnicos) · [Estructura](#-estructura-del-repositorio) · [Licencia](#-licencia)
+[Qué es](#-qué-es) · [Capturas](#-capturas) · [En movimiento](#-en-movimiento) · [Cómo se juega](#-cómo-se-juega) · [El PC que se rompe](#-el-pc-que-se-rompe) · [Efectos y power-ups](#-efectos-y-power-ups) · [Jefes](#-jefes) · [Tienda y logros](#-tienda-y-logros) · [Los 38 iconos](#-los-38-iconos) · [Ejecutar y publicar](#-ejecutar-y-publicar) · [Detalles técnicos](#-detalles-técnicos) · [Estructura](#-estructura-del-repositorio) · [Licencia](#-licencia)
 
 ## 🖥️ Qué es
 
@@ -46,6 +46,32 @@ Ninja de Escritorio es un juego de navegador en el que los objetos que vuelan so
 <img src="docs/movil_menu.png" height="440"> &nbsp; <img src="docs/movil_juego.png" height="440">
 
 *En el móvil se juega con el dedo y la interfaz se adapta a la pantalla.*
+
+</div>
+
+## 🎬 En movimiento
+
+<div align="center">
+
+### 📱 En el móvil
+
+| Cortes y combos | El PC se rompe | Jefe |
+|:---:|:---:|:---:|
+| <img src="docs/gifs/movil-cortes.gif" width="250"> | <img src="docs/gifs/movil-capas.gif" width="250"> | <img src="docs/gifs/movil-jefe.gif" width="250"> |
+
+### 🖥️ En el PC
+
+**Power-ups:** Tiempo lento, Antivirus y Ctrl+Z
+
+<img src="docs/gifs/pc-poderes.gif" width="720">
+
+**Las capas del PC rompiéndose, de la pantalla al chip**
+
+<img src="docs/gifs/pc-capas.gif" width="720">
+
+**Pelea contra un jefe**
+
+<img src="docs/gifs/pc-jefe.gif" width="720">
 
 </div>
 
@@ -180,7 +206,7 @@ python3 -m http.server 8000   # http://localhost:8000
 ninja-de-escritorio/
 ├── index.html        # El juego completo (HTML + CSS + JS)
 ├── assets/iconos/    # Los 38 iconos en PNG
-├── docs/             # Capturas e imágenes de este README
+├── docs/             # Capturas, GIFs e imágenes de este README
 ├── CHANGELOG.md      # Historial de versiones
 ├── LICENSE           # MIT
 └── README.md
