@@ -289,9 +289,25 @@ ninja-de-escritorio/
 
 ## 📜 Licencia
 
-El código y el arte están publicados bajo la licencia **[MIT](LICENSE)**. Puedes usarlos, modificarlos y compartirlos, manteniendo el aviso de copyright.
+## 📜 Licencia
 
-Los iconos son dibujos originales **inspirados** en el estilo de los sistemas operativos clásicos. No contienen logos, marcas ni recursos de ninguna compañía. *Windows* es una marca de Microsoft y este proyecto no está afiliado a ella.
+El código y el arte están bajo **[PolyForm Noncommercial 1.0.0](LICENSE)**.
+
+**Puedes, sin pedir permiso:**
+- Jugarlo y compartir el enlace.
+- Estudiar el código y modificarlo para uso personal, educativo o sin ánimo de lucro.
+- Subirlo a otra web o a tu propio hosting, siempre gratis y sin anuncios, conservando
+  el aviso de copyright y la licencia.
+- Hacer streams, vídeos y capturas del juego, aunque tu canal esté monetizado.
+
+**Necesitas mi permiso por escrito para:**
+- Vender el juego, una copia o una versión modificada.
+- Publicarlo en tiendas de aplicaciones o plataformas de juegos.
+- Incluirlo en una web con anuncios, suscripciones o compras.
+- Usar el pixel art y los iconos en un producto comercial.
+
+Los iconos son dibujos originales inspirados en el estilo de los sistemas operativos
+clásicos. Windows es una marca de Microsoft y este proyecto no está afiliado a ella.
 
 ---
 
