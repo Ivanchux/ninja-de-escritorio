@@ -287,7 +287,6 @@ ninja-de-escritorio/
 - [ ] Tutorial interactivo para móvil
 - [ ] Más escritorios y estelas
 
-## 📜 Licencia
 
 ## 📜 Licencia
 
