@@ -93,9 +93,21 @@ Una partida es **un viaje de la pantalla al chip**. Hay 9 pisos, uno por cada ca
 
 ### Cómo funciona
 
-- **Mapa ramificado, como en Slay the Spire.** En cada piso eliges entre 2 o 3 nodos conectados con el anterior. Cada camino tiene un riesgo distinto.
+- **Mapa ramificado, como en Slay the Spire.** En cada piso eliges entre 2 y 4 nodos conectados con el anterior. Cada camino tiene un riesgo distinto.
 - **Estabilidad y créditos.** La estabilidad no se rellena entre oleadas. Los créditos (que ganas jugando) sirven para comprar mejoras en el mercado.
 - **Jefe a mitad (piso 5) y jefe final (piso 9).** El jefe final es el **Procesador Maestro**, con **3 fases**: más proyectiles, abanicos de virus y un colapso térmico.
+
+### Cada descenso es distinto (2.1)
+
+- **Mutaciones.** Al empezar eliges 1 de 3 reglas al azar: *Veterano, Hambre de bytes, Cielo despejado, Piratas, Frágil, Cafeína, Modo ahorro*.
+- **Reliquias.** 8 objetos únicos que solo dan las élites, el jefe de mitad y las subastas (*Núcleo de cuarzo, Reloj de arena roto, Sello dorado…*).
+- **Anomalías de oleada.** Algunas oleadas llevan una condición visible en el mapa: lluvia de virus, fiebre dorada, niebla, viento, sobrecarga o gravedad baja.
+- **Mapa variable.** Cada piso tiene entre 2 y 4 nodos, y los caminos cambian en cada partida.
+- **12 eventos** que no se repiten dentro del mismo descenso.
+
+<div align="center">
+<img src="docs/mutacion.png" width="240"> &nbsp; <img src="docs/mapa-anomalias.png" width="240"> &nbsp; <img src="docs/reliquias.png" width="240">
+</div>
 
 | Nodo | Qué pasa |
 |:-:|---|
@@ -195,6 +207,18 @@ Cada corte tiene **reacción visual**:
 
 Cada 5 niveles (en Clásico y Contrarreloj) aparece un jefe con **sprite propio de 48×48** que lanza iconos peligrosos. Hay que golpearlo varias veces antes de que escape. Si se va, pierdes estabilidad.
 
+Cada jefe tiene **su propia mecánica, sus propios sonidos y su propia música**:
+
+| Jefe | Mecánica |
+|---|---|
+| Rey Virus | Lanza abanicos de 5 virus. |
+| Caballo de Troya | Sus «regalos» dorados esconden virus. |
+| Ransomware | Está cifrado: hay que cortar sus candados para poder golpearlo. |
+| Pantallazo Gigante | Tapa media pantalla con un pantallazo azul. |
+| Gusano Mayor | Embiste de lado a lado y deja virus a su paso. |
+| Adware Infinito | Abre ventanas emergentes que se cierran cortando su X. |
+| Procesador Maestro | Solo es vulnerable cuando abre su núcleo. |
+
 <div align="center">
 <img src="docs/jefes.png" width="720">
 </div>
@@ -287,26 +311,11 @@ ninja-de-escritorio/
 - [ ] Tutorial interactivo para móvil
 - [ ] Más escritorios y estelas
 
-
 ## 📜 Licencia
 
-El código y el arte están bajo **[PolyForm Noncommercial 1.0.0](LICENSE)**.
+El código y el arte están publicados bajo la licencia **[MIT](LICENSE)**. Puedes usarlos, modificarlos y compartirlos, manteniendo el aviso de copyright.
 
-**Puedes, sin pedir permiso:**
-- Jugarlo y compartir el enlace.
-- Estudiar el código y modificarlo para uso personal, educativo o sin ánimo de lucro.
-- Subirlo a otra web o a tu propio hosting, siempre gratis y sin anuncios, conservando
-  el aviso de copyright y la licencia.
-- Hacer streams, vídeos y capturas del juego, aunque tu canal esté monetizado.
-
-**Necesitas mi permiso por escrito para:**
-- Vender el juego, una copia o una versión modificada.
-- Publicarlo en tiendas de aplicaciones o plataformas de juegos.
-- Incluirlo en una web con anuncios, suscripciones o compras.
-- Usar el pixel art y los iconos en un producto comercial.
-
-Los iconos son dibujos originales inspirados en el estilo de los sistemas operativos
-clásicos. Windows es una marca de Microsoft y este proyecto no está afiliado a ella.
+Los iconos son dibujos originales **inspirados** en el estilo de los sistemas operativos clásicos. No contienen logos, marcas ni recursos de ninguna compañía. *Windows* es una marca de Microsoft y este proyecto no está afiliado a ella.
 
 ---
 

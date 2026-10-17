@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## 2.1 · Cada partida distinta
+- Cada jefe tiene sonidos propios (entrada, ataque, golpe, derrota y especiales) y su propia música.
+- Cada jefe tiene mecánica propia: abanicos, regalos trampa, candados, pantallazo que tapa, embestidas, ventanas emergentes y núcleo que se abre y se cierra.
+- Descenso: 7 mutaciones, 8 reliquias, 6 anomalías de oleada, mapa de 2 a 4 nodos por piso y 7 eventos nuevos (12 en total, sin repetir).
+
 ## 2.0 · Descenso
 - Nuevo modo roguelike **Descenso**: 9 pisos (una capa del PC cada uno) con mapa ramificado tipo Slay the Spire.
 - Nodos de oleada, élite, mercado, reparación, evento y jefe. Jefe a mitad de camino y **Procesador Maestro** como jefe final con 3 fases.
