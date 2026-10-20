@@ -12,7 +12,7 @@ Corta carpetas, disquetes y CD-ROM, esquiva virus y pantallazos azules y derrota
 ![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-f7df1e?style=flat-square&logo=javascript&logoColor=black)
 ![Dependencias](https://img.shields.io/badge/dependencias-0-success?style=flat-square)
 ![Móvil](https://img.shields.io/badge/PC%20y%20móvil-sí-000080?style=flat-square)
-![Licencia](https://img.shields.io/badge/licencia-MIT-808080?style=flat-square)
+![Licencia](https://img.shields.io/badge/licencia-PolyForm%20NC-808080?style=flat-square)
 
 </div>
 
@@ -297,7 +297,7 @@ ninja-de-escritorio/
 ├── assets/iconos/    # Los 38 iconos en PNG
 ├── docs/             # Capturas, GIFs e imágenes de este README
 ├── CHANGELOG.md      # Historial de versiones
-├── LICENSE           # MIT
+├── LICENSE           # PolyForm Noncommercial 1.0.0
 └── README.md
 ```
 
@@ -313,7 +313,19 @@ ninja-de-escritorio/
 
 ## 📜 Licencia
 
-El código y el arte están publicados bajo la licencia **[MIT](LICENSE)**. Puedes usarlos, modificarlos y compartirlos, manteniendo el aviso de copyright.
+El código y el arte están bajo **[PolyForm Noncommercial 1.0.0](LICENSE)**.
+
+**Puedes, sin pedir permiso:**
+- Jugarlo y compartir el enlace.
+- Estudiar el código y modificarlo para uso personal, educativo o sin ánimo de lucro.
+- Subirlo a otra web o a tu propio hosting, siempre gratis y sin anuncios, conservando el aviso de copyright y la licencia.
+- Hacer streams, vídeos y capturas del juego, aunque tu canal esté monetizado.
+
+**Necesitas mi permiso por escrito para:**
+- Vender el juego, una copia o una versión modificada.
+- Publicarlo en tiendas de aplicaciones o plataformas de juegos.
+- Incluirlo en una web con anuncios, suscripciones o compras.
+- Usar el pixel art y los iconos en un producto comercial.
 
 Los iconos son dibujos originales **inspirados** en el estilo de los sistemas operativos clásicos. No contienen logos, marcas ni recursos de ninguna compañía. *Windows* es una marca de Microsoft y este proyecto no está afiliado a ella.
 
