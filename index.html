@@ -113,6 +113,7 @@ canvas#c{flex:1;width:100%;display:block;cursor:crosshair;min-height:0}
     <div class="body">
       <p>Desliza el cursor o el dedo para cortar los iconos que caen. Evita los virus, los errores y las calaveras.</p>
       <div class="mode"><button class="btn" id="goRun" type="button">Descenso</button><span>Roguelike: baja de la pantalla al chip eligiendo tu camino, mejoras y jefes. Una vida.</span></div>
+      <div class="mode"><button class="btn" id="goDaily" type="button">Descenso diario</button><span id="dailyinfo">El mismo descenso para todos hoy.</span></div>
       <div class="mode"><button class="btn" id="goClassic" type="button">Clásico</button><span>Cada icono que se cae resta estabilidad al sistema. Subes de nivel cada 15 puntos.</span></div>
       <div class="mode"><button class="btn" id="goTimed" type="button">Contrarreloj</button><span>60 segundos para sumar todos los puntos que puedas. Cada virus que cortes resta 3 s y Ctrl+Z suma 4 s.</span></div>
       <p class="note">Cada 5 niveles aparece un jefe. Con cada partida ganas bytes para comprar estelas y escritorios nuevos.</p>
@@ -641,7 +642,7 @@ function defSave(){
   return {bytes:0,seen:false,
     stats:{cuts:0,gold:0,shield:0,combo:0,bestLevel:0,boss:0,bestTimed:0,bought:0,runs:0,bestFloor:0,wins:0,syn:0,descensos:0},
     ach:{},own:{trail:{white:1},desk:{classic:1},blade:{espada:1}},eq:{trail:'white',desk:'classic',blade:'espada'},meta:{ram:0,cred:0,reroll:0},
-    set:{music:true,sfx:true,vib:true},best:{classic:0,timed:0,run:0},top:{classic:[],timed:[],run:[]}};
+    set:{music:true,sfx:true,vib:true},best:{classic:0,timed:0,run:0},top:{classic:[],timed:[],run:[]},daily:{date:'',score:0,floor:0,won:false,plays:0,streak:0,last:''}};
 }
 function mergeInto(d,s){
   if(!s||typeof s!=='object')return d;
@@ -785,7 +786,13 @@ function bar(){
     $('stabfill').style.width=Math.max(0,stab/M.maxStab*100)+'%';
   }
 }
+function dailyTxt(){
+  var d=save.daily,k=dayKey();
+  if(d.date===k&&d.plays)return 'Hoy ('+k+'): mejor '+d.score+' pts, piso '+Math.min(FLOORS,d.floor)+(d.won?' · completado':'')+' · racha '+d.streak+(d.streak===1?' día':' días')+'.';
+  return 'El mismo descenso para todos hoy ('+k+'). Racha: '+(d.last===dayBefore(k)||d.last===k?d.streak:0)+'.';
+}
 function menuBest(){
+  if($('dailyinfo'))$('dailyinfo').textContent=dailyTxt();
   $('menubest').textContent='Récord clásico: '+save.best.classic+'. Contrarreloj: '+save.best.timed+'. Descenso: piso '+save.best.run+' de '+FLOORS+'. Bytes: '+save.bytes+'.';
 }
 function addFloat(x,y,txt,col){floaters.push({x:x,y:y,t:txt,c:col,l:1})}
@@ -876,7 +883,8 @@ function over(why){
   ui();hud();
 }
 function start(m){
-  if(m==='run'){rgNew();return}
+  if(m==='run'){rgNew(false);return}
+  if(m==='daily'){rgNew(true);return}
   rgNeutral();mode=m;items=[];halves=[];trail=[];floaters=[];sparks=[];boss=null;fxClear();
   score=0;combo=0;slow=0;elapsed=0;spawnT=.4;stab=100;timeLeft=TIME0;level=1;
   run={cuts:0,bosses:0,ach:[]};
@@ -910,7 +918,8 @@ function setPause(on){
 $('goClassic').onclick=function(){start('classic')};
 $('goTimed').onclick=function(){start('timed')};
 $('goRun').onclick=function(){start('run')};
-$('again').onclick=function(){start(mode)};
+$('goDaily').onclick=function(){start('daily')};
+$('again').onclick=function(){start(mode==='run'&&rg.daily?'daily':mode)};
 $('endmenu').onclick=toMenu;
 $('pausemenu').onclick=quitToMenu;
 $('pausebtn').onclick=function(){setPause(!pz.pause)};
@@ -2048,22 +2057,30 @@ function rgPts(p){
 }
 function rgNeutral(){rg={active:false,upg:{},syn:{},evSeen:[]};M=neutralM()}
 
+/* --- semilla del Descenso: con semilla, el mapa, las mutaciones, las ofertas y los eventos salen iguales para todos --- */
+function hashSeed(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+var rr=Math.random;
+function rrSet(tag){rr=rg&&rg.seed!=null?rng(hashSeed(rg.seed+'|'+tag)):Math.random}
+function dayKey(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function dayBefore(k){var p=k.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]);d.setDate(d.getDate()-1);return dayKey(d)}
+
 /* --- construcción del mapa --- */
 function rgGen(){
+  rrSet('map');
   var sizes=[3],map=[],f,i,j,n,t,r,opt=[2,3,3,4];
-  for(f=1;f<FLOORS;f++)sizes.push(f===4||f===8?1:opt[Math.floor(Math.random()*4)]);
+  for(f=1;f<FLOORS;f++)sizes.push(f===4||f===8?1:opt[Math.floor(rr()*4)]);
   for(f=0;f<FLOORS;f++){
     var row=[];
     for(i=0;i<sizes[f];i++){
       if(f===4||f===8)t='jefe';
       else if(f===0)t='ola';
-      else{r=Math.random();t=r<.46?'ola':r<.62&&f>=2?'eli':r<.77?'eve':r<.89?'mer':'rep'}
-      var an=null;if((t==='ola'||t==='eli')&&f>=1&&Math.random()<.55)an=ANO[Math.floor(Math.random()*ANO.length)].id;
+      else{r=rr();t=r<.46?'ola':r<.62&&f>=2?'eli':r<.77?'eve':r<.89?'mer':'rep'}
+      var an=null;if((t==='ola'||t==='eli')&&f>=1&&rr()<.55)an=ANO[Math.floor(rr()*ANO.length)].id;
       row.push({t:t,nx:[],an:an});
     }
-    if(f===3&&!row.some(function(x){return x.t==='mer'}))row[Math.floor(Math.random()*row.length)].t='mer';
-    if(f===7&&!row.some(function(x){return x.t==='rep'}))row[Math.floor(Math.random()*row.length)].t='rep';
-    if(f===1&&row.every(function(x){return x.t==='ola'}))row[Math.min(1,row.length-1)].t=Math.random()<.5?'eve':'mer';
+    if(f===3&&!row.some(function(x){return x.t==='mer'}))row[Math.floor(rr()*row.length)].t='mer';
+    if(f===7&&!row.some(function(x){return x.t==='rep'}))row[Math.floor(rr()*row.length)].t='rep';
+    if(f===1&&row.every(function(x){return x.t==='ola'}))row[Math.min(1,row.length-1)].t=rr()<.5?'eve':'mer';
     map.push(row);
   }
   for(f=0;f<FLOORS-1;f++){
@@ -2073,8 +2090,8 @@ function rgGen(){
       if(a.length===1){nd.nx=b.map(function(_,q){return q});return}
       var q0=Math.min(b.length-1,Math.round(k*(b.length-1)/(a.length-1)));
       nd.nx=[q0];
-      if(q0>0&&Math.random()<.4)nd.nx.push(q0-1);
-      if(q0<b.length-1&&Math.random()<.4)nd.nx.push(q0+1);
+      if(q0>0&&rr()<.4)nd.nx.push(q0-1);
+      if(q0<b.length-1&&rr()<.4)nd.nx.push(q0+1);
     });
     b.forEach(function(_,q){
       if(!a.some(function(nd){return nd.nx.indexOf(q)>=0})){var k=Math.min(a.length-1,Math.round(q*(a.length-1)/Math.max(1,b.length-1)));a[k].nx.push(q)}
@@ -2161,8 +2178,8 @@ function rgNodeDone(){
   level=1+rg.floor*2;hueT=targetHue();
   rgMap();
 }
-function rgNew(){
-  mode='run';rg={active:true,upg:{},syn:{},floor:0,cur:0,path:[],cred:10*save.meta.cred,reroll:save.meta.reroll,revive:0,mut:null,an:null,evSeen:[],pirata:0,kind:'',wave:0,target:0,fwLeft:0,score:0,node:null};
+function rgNew(daily){
+  mode='run';rg={active:true,daily:!!daily,seed:daily?'daily-'+dayKey():null,rrUsed:0,upg:{},syn:{},floor:0,cur:0,path:[],cred:10*save.meta.cred,reroll:save.meta.reroll,revive:0,mut:null,an:null,evSeen:[],pirata:0,kind:'',wave:0,target:0,fwLeft:0,score:0,node:null};
   rg.map=rgGen();rgMods();
   items=[];halves=[];trail=[];floaters=[];sparks=[];boss=null;fxClear();
   score=0;combo=0;slow=0;elapsed=0;stab=M.maxStab;level=1;playing=false;ended=false;down=false;last=null;
@@ -2173,12 +2190,12 @@ function rgNew(){
   rgMutPick();
 }
 function rgMutPick(){
-  var opts=MUT.slice().sort(function(){return Math.random()-.5}).slice(0,3);
+  rrSet('mut');var opts=MUT.slice(),q,t;for(q=opts.length-1;q>0;q--){var z=Math.floor(rr()*(q+1));t=opts[q];opts[q]=opts[z];opts[z]=t}opts=opts.slice(0,3);
   rgShow('Elige una mutación del descenso',function(b){
     b.appendChild(el('p',null,'Cada descenso empieza con una regla distinta.'));
     opts.forEach(function(m){
       var c=el('button','upg');c.type='button';var h=el('div','uh');h.appendChild(el('strong',null,m.n));var t=el('span','ut','Mutación');t.style.background='#8040c0';h.appendChild(t);c.appendChild(h);c.appendChild(el('span',null,m.d));
-      c.onclick=function(){rg.mut=m.id;if(m.id==='veterano'){var o=rgOffer(false,2);o.forEach(function(u){rg.upg[u.id]=1})}rgMods();stab=M.maxStab;rgMap()};b.appendChild(c)
+      c.onclick=function(){rg.mut=m.id;if(m.id==='veterano'){rrSet('vet');var o=rgOffer(false,2);o.forEach(function(u){rg.upg[u.id]=1})}rgMods();stab=M.maxStab;rgMap()};b.appendChild(c)
     });
     b.appendChild(rgBtn('Sin mutación',function(){rg.mut=null;rgMods();rgMap()}));
   });
@@ -2210,7 +2227,7 @@ function rgOffer(rare,n){
   var pool=rgPool(rare),out=[];
   if(rare===true&&pool.length<n)pool=pool.concat(rgPool(false).filter(function(u){return pool.indexOf(u)<0}));
   while(out.length<n&&pool.length){
-    var w=pool.map(function(u){return u.r==='r'&&!rare?.5:1}),tot=w.reduce(function(a,b){return a+b},0),r=Math.random()*tot,k=0;
+    var w=pool.map(function(u){return u.r==='r'&&!rare?.5:1}),tot=w.reduce(function(a,b){return a+b},0),r=rr()*tot,k=0;
     while(k<pool.length-1&&r>w[k]){r-=w[k];k++}
     out.push(pool.splice(k,1)[0]);
   }
@@ -2232,6 +2249,7 @@ function upgCard(u,onPick,price){
   b.onclick=onPick;return b;
 }
 function rgReward(rare,done,title){
+  rrSet('rew|'+rg.floor+'|'+rg.rrUsed+'|'+String(rare));
   if(rare==='x'&&!rgPool('x').length){rare=true;title=null}
   var offer=rgOffer(rare,3);
   rgShow(title||(rare===true?'Mejora rara':rare==='x'?'Elige una reliquia':'Elige una mejora'),function(b){
@@ -2239,7 +2257,7 @@ function rgReward(rare,done,title){
     if(!offer.length){b.appendChild(el('p',null,'Ya tienes todas las mejoras. Recibes 25 créditos.'));rg.cred+=25;b.appendChild(rgBtn('Continuar',done));return}
     offer.forEach(function(u){b.appendChild(upgCard(u,function(){addUpg(u.id);beep(660,.1,'square',.05);done()}))});
     var row=el('div','row');
-    if(rg.reroll>0)row.appendChild(rgBtn('Relanzar ('+rg.reroll+')',function(){rg.reroll--;rgReward(rare,done,title)}));
+    if(rg.reroll>0)row.appendChild(rgBtn('Relanzar ('+rg.reroll+')',function(){rg.reroll--;rg.rrUsed++;rgReward(rare,done,title)}));
     row.appendChild(rgBtn('Saltar (+10 créditos)',function(){rg.cred+=10;done()}));
     b.appendChild(row);
   });
@@ -2248,6 +2266,7 @@ function rgReward(rare,done,title){
 /* --- mercado, reparación, eventos --- */
 function rgHeal(p){setStab(Math.min(M.maxStab,stab+M.maxStab*p))}
 function rgShop(){
+  rrSet('shop|'+rg.floor);
   var offer=rgOffer(false,3).concat(rgOffer('x',1)),bought={},healed=false;
   function draw(){
     rgShow('Mercado de bytes',function(b){
@@ -2286,7 +2305,7 @@ var EVENTS=[
    ['Aceptar',function(){rg.cred+=30;setStab(stab-15);return 'Ganas 30 créditos, pero el adware te cuesta un 15% de estabilidad.'}],
    ['Cerrar la ventana',function(){return 'Cierras el aviso y sigues.'}]]},
  {n:'Puerto USB desconocido',t:'Hay un pendrive sin etiqueta conectado al equipo.',o:[
-   ['Abrirlo',function(){if(Math.random()<.5){return 'RARE'}setStab(stab-M.maxStab*.2);return 'Era un virus. Pierdes un 20% de estabilidad.'}],
+   ['Abrirlo',function(){if(rr()<.5){return 'RARE'}setStab(stab-M.maxStab*.2);return 'Era un virus. Pierdes un 20% de estabilidad.'}],
    ['Ignorarlo',function(){return 'Lo dejas donde estaba.'}]]},
  {n:'Copia de seguridad',t:'Un servicio de respaldo te ofrece restaurar el sistema por 25 créditos.',o:[
    ['Pagar 25 créditos',function(){if(rg.cred<25)return 'No tienes suficientes créditos.';rg.cred-=25;rgHeal(.25);return 'Sistema restaurado: +25% de estabilidad.'}],
@@ -2313,7 +2332,7 @@ var EVENTS=[
    ['Subir frecuencia (−15% estabilidad)',function(){setStab(stab-M.maxStab*.15);if(has('overclock')<UPD.overclock.max){addUpg('overclock');return 'Consigues un Overclock.'}rg.cred+=20;return 'Ya no da más de sí: te llevas 20 créditos.'}],
    ['Dejarlo como está',function(){return 'Más vale prevenir.'}]]},
  {n:'Papelera de reciclaje',t:'La papelera está llena de cosas que alguien tiró.',o:[
-   ['Rebuscar',function(){if(Math.random()<.6){rg.cred+=25;return 'Encuentras 25 créditos entre la basura.'}setStab(stab-M.maxStab*.05);return 'Solo había virus viejos: −5% de estabilidad.'}],
+   ['Rebuscar',function(){if(rr()<.6){rg.cred+=25;return 'Encuentras 25 créditos entre la basura.'}setStab(stab-M.maxStab*.05);return 'Solo había virus viejos: −5% de estabilidad.'}],
    ['Vaciarla',function(){rg.cred+=5;return 'Liberas espacio: +5 créditos.'}]]},
  {n:'Desfragmentación',t:'El disco está hecho un lío. Se puede ordenar.',o:[
    ['Desfragmentar (20 créditos)',function(){if(rg.cred<20)return 'No tienes créditos.';rg.cred-=20;rgHeal(.4);return 'Disco ordenado: +40% de estabilidad.'}],
@@ -2321,7 +2340,7 @@ var EVENTS=[
 ];
 function rgEvent(){
   var left=EVENTS.filter(function(e){return rg.evSeen.indexOf(e.n)<0});if(!left.length){rg.evSeen=[];left=EVENTS}
-  var ev=pick(left);rg.evSeen.push(ev.n);
+  rrSet('ev|'+rg.floor);var ev=left[Math.floor(rr()*left.length)];rg.evSeen.push(ev.n);
   rgShow('Evento: '+ev.n,function(b){
     b.appendChild(el('p',null,ev.t));b.appendChild(el('p','note',stabTxt()));
     ev.o.forEach(function(op){
@@ -2343,7 +2362,7 @@ function rgBossNode(){
   items=[];halves=[];fxClear();combo=0;slow=0;swipeCuts=0;rg.kind='jefe';rg.fwLeft=M.fw;
   var fin=rg.floor===FLOORS-1;
   spawnT=1.2;playing=true;ended=false;lastKey='';ui();
-  startBoss(fin?6:Math.floor(Math.random()*6),fin?34:14,fin);
+  rrSet('boss|'+rg.floor);startBoss(fin?6:Math.floor(rr()*6),fin?34:14,fin);
   hud();bar();
 }
 function rgBossKilled(){
@@ -2367,11 +2386,18 @@ function rgScoreEarned(win){return Math.round(score/2)+rg.floor*25+(win?150:0)+M
 function rgBank(why,win){
   if(!rg.active)return {earned:0,rec:false};
   var floors=rg.floor+(win?0:0);
-  var earned=rgScoreEarned(win),rec=floors>save.best.run;
-  if(rec)save.best.run=floors;
+  var earned=rgScoreEarned(win),rec=false;
+  if(rg.daily){
+    var dk=dayKey(),sd=save.daily;
+    if(sd.date!==dk){sd.date=dk;sd.score=0;sd.floor=0;sd.won=false;sd.plays=0}
+    sd.plays++;
+    if(sd.plays===1){sd.streak=sd.last===dayBefore(dk)?sd.streak+1:1;sd.last=dk}
+    rec=score>sd.score;if(rec)sd.score=score;
+    if(floors>sd.floor)sd.floor=floors;if(win)sd.won=true;
+  }else{rec=floors>save.best.run;if(rec)save.best.run=floors}
   save.bytes+=earned;save.stats.runs++;save.stats.descensos++;
   if(win)save.stats.wins++;
-  if(score>0)addTop('run',score,floors);
+  if(score>0&&!rg.daily)addTop('run',score,floors);
   save.seen=true;checkAch();persist();
   rg.active=false;
   return {earned:earned,rec:rec};
@@ -2380,9 +2406,9 @@ function rgOver(why){
   playing=false;ended=true;down=false;last=null;boss=null;hint=null;
   beep(110,.6,'sawtooth',.08);
   var f=rg.floor,r=rgBank('dead');
-  $('endtag').textContent='Descenso';
+  $('endtag').textContent=rg.daily?'Descenso diario':'Descenso';
   $('endmsg').textContent='El sistema cayó en el piso '+(f+1)+' ('+BGN[f]+'). Mejoras: '+Object.keys(rg.upg).length+'.';
-  $('final').textContent='Puntos: '+score+'   Pisos superados: '+f+'   Mejor: '+save.best.run;
+  $('final').textContent='Puntos: '+score+'   Pisos superados: '+f+(rg.daily?'   Mejor de hoy: '+save.daily.score:'   Mejor: '+save.best.run);
   $('endbytes').textContent='Bytes ganados: '+r.earned;
   $('endach').hidden=!run.ach.length;$('endach').textContent=run.ach.length?'Logros nuevos: '+run.ach.join(', '):'';
   $('newrec').hidden=!r.rec;
@@ -2395,9 +2421,9 @@ function rgWin(){
     b.appendChild(el('p',null,'Has llegado hasta el chip y has derrotado al Procesador Maestro.'));
     b.appendChild(el('p','note','Puntos: '+score+'  ·  Mejoras: '+Object.keys(rg.upg).length+'  ·  Créditos: '+rg.cred));
     b.appendChild(el('p',null,'Bytes ganados: '+r.earned));
-    if(r.rec)b.appendChild(el('p',null,'Nuevo récord de descenso.'));
+    if(r.rec)b.appendChild(el('p',null,rg.daily?'Nuevo mejor del día.':'Nuevo récord de descenso.'));
     if(run.ach.length)b.appendChild(el('p','note','Logros nuevos: '+run.ach.join(', ')));
-    var row=el('div','row');row.appendChild(rgBtn('Nuevo descenso',function(){rgHide();rgNew()}));row.appendChild(rgBtn('Menú',function(){toMenu()}));b.appendChild(row);
+    var row=el('div','row');row.appendChild(rgBtn(rg.daily?'Repetir el de hoy':'Nuevo descenso',function(){var d=rg.daily;rgHide();rgNew(d)}));row.appendChild(rgBtn('Menú',function(){toMenu()}));b.appendChild(row);
   });
   arp([523,659,784,1047,1319]);
 }
@@ -2619,6 +2645,13 @@ function frame(now){
 }
 toMenu();
 requestAnimationFrame(frame);
+/* ---------- Gancho de pruebas (solo con ?test=1): permite abrir las pantallas del Descenso sin jugar ---------- */
+if(/[?&]test=1/.test(location.search))window.NT={
+  rgNew:rgNew,rgMap:rgMap,rgShop:rgShop,rgRest:rgRest,rgEvent:rgEvent,rgReward:rgReward,rgNodeDone:rgNodeDone,rgEnter:rgEnter,rgWin:rgWin,rgOver:rgOver,
+  state:function(){return {rg:rg,stab:stab,score:score,floor:rg.floor}},
+  set:function(o){if('floor' in o)rg.floor=o.floor;if('stab' in o)stab=o.stab;if('cred' in o)rg.cred=o.cred;if('score' in o)score=o.score;hud()},
+  addUpg:function(id){addUpg(id)}
+};
 })();
 
 </script>
