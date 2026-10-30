@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## 2.2 · Descenso diario y pulido
+- **Descenso diario:** mismo mapa, mutaciones, ofertas, mercado, eventos y jefes para todos cada día. Mejor resultado del día y racha de días.
+- **Mapa del Descenso** a pantalla ancha: cada piso es una franja con el color de su capa, nodos con iconos del propio juego, camino recorrido en dorado, vista previa de cada nodo y panel de estabilidad, créditos y mejoras.
+- **Mejoras y mercado** en tarjetas con icono, rareza y aviso cuando una mejora completa una sinergia.
+- **Eventos** como cuadros de mensaje con icono, **zona de reparación** con dos opciones claras y **resumen** al terminar un descenso (pisos, cortes, jefes, mejoras).
+- **Legibilidad:** aura propia por tipo de icono. Lo que se corta no lleva aura; lo que hay que evitar, aro rojo; ayudas, aro cian; dorados, aro amarillo.
+- Botones y teclas de **sonido (M)** y **pantalla completa (F)**.
+- Script `tools/build-dist.mjs` y carpeta `itch/` para publicar en itch.io.
+
 ## 2.1 · Cada partida distinta
 - Cada jefe tiene sonidos propios (entrada, ataque, golpe, derrota y especiales) y su propia música.
 - Cada jefe tiene mecánica propia: abanicos, regalos trampa, candados, pantallazo que tapa, embestidas, ventanas emergentes y núcleo que se abre y se cierra.
