@@ -81,15 +81,25 @@ Una partida es **un viaje de la pantalla al chip**. Hay 9 pisos, uno por cada ca
 
 <div align="center">
 
-| El mapa | Eliges una mejora | Jefe final |
-|:---:|:---:|:---:|
-| <img src="docs/mapa.png" width="300"> | <img src="docs/recompensa.png" width="300"> | <img src="docs/jefe-final.png" width="300"> |
+| El mapa | Eliges una mejora |
+|:---:|:---:|
+| <img src="docs/mapa.png" width="420"> | <img src="docs/recompensa.png" width="420"> |
+
+| Un evento | Resumen del descenso |
+|:---:|:---:|
+| <img src="docs/evento.png" width="420"> | <img src="docs/resumen.png" width="420"> |
+
+<img src="docs/movil_mapa.png" height="440"> &nbsp; <img src="docs/jefe-final.png" height="440">
 
 <img src="docs/gifs/movil-descenso.gif" height="420"> &nbsp; <img src="docs/gifs/movil-jefe-final.gif" height="420">
 
 <img src="docs/gifs/pc-descenso.gif" width="600">
 
 </div>
+
+### Descenso diario
+
+El botón **Descenso diario** abre el mismo descenso para todo el mundo ese día (la fecha local es la semilla): el mapa, las tres mutaciones que se ofrecen, las mejoras de cada oferta, el mercado, los eventos y los jefes salen iguales. Las oleadas de iconos siguen siendo aleatorias. Se guarda el mejor resultado del día, el piso más profundo y una **racha** de días seguidos jugados. Puedes repetirlo las veces que quieras.
 
 ### Cómo funciona
 
@@ -305,8 +315,8 @@ ninja-de-escritorio/
 
 - [x] Jefe final propio para la capa del chip
 - [x] Modo roguelike con mapa y mejoras
-- [ ] Descenso diario con semilla fija
-- [ ] Reliquias de élite y más eventos
+- [x] Descenso diario con semilla fija
+- [ ] Más reliquias y más eventos
 - [ ] Ranking online
 - [ ] Tutorial interactivo para móvil
 - [ ] Más escritorios y estelas
