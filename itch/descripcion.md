@@ -2,6 +2,7 @@
 
 ## Modos
 - **Descenso:** una partida es un viaje de la pantalla al chip. Hay 9 pisos y solo una vida. Eliges tu camino en un mapa ramificado, recoges mejoras y reliquias y te enfrentas a jefes. El jefe final es el Procesador Maestro.
+- **Descenso diario:** el mismo descenso para todos cada día (mismo mapa, mutaciones, mejoras y eventos), con mejor resultado del día y racha de días.
 - **Clásico:** una barra de estabilidad baja cuando se cae un icono bueno o cortas un virus. Cada 5 niveles aparece un jefe.
 - **Contrarreloj:** 60 segundos para sumar todos los puntos que puedas.
 
