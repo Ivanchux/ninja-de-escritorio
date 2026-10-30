@@ -1,0 +1,10 @@
+arcade
+roguelike
+pixel-art
+retro
+casual
+singleplayer
+touch
+html5
+2d
+fast-paced

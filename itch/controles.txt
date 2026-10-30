@@ -1,0 +1,5 @@
+Ratón: mantener pulsado y deslizar para cortar.
+Pantalla táctil: deslizar el dedo para cortar.
+P o Esc: pausa.
+M: silencio.
+F: pantalla completa.

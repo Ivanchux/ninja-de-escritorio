@@ -103,6 +103,8 @@ canvas#c{flex:1;width:100%;display:block;cursor:crosshair;min-height:0}
   <div id="bar">
     <button class="btn" id="setbtn" type="button">Ajustes</button>
     <button class="btn" id="pausebtn" type="button">Pausa</button>
+    <button class="btn" id="mutebtn" type="button" title="Silenciar o activar el sonido (M)">Sonido: sí</button>
+    <button class="btn" id="fsbtn" type="button" title="Pantalla completa (F)" hidden>Pantalla completa</button>
     <div id="stab"><span id="stabLabel">Sistema</span><div id="stabbar"><div id="stabfill"></div></div></div>
   </div>
 
@@ -913,9 +915,32 @@ $('endmenu').onclick=toMenu;
 $('pausemenu').onclick=quitToMenu;
 $('pausebtn').onclick=function(){setPause(!pz.pause)};
 $('resume').onclick=function(){setPause(false)};
+/* ---------- Silencio y pantalla completa (también para iframes, como en itch.io) ---------- */
+function soundOn(){return !!(save.set.music||save.set.sfx)}
+function syncSoundBtn(){$('mutebtn').textContent='Sonido: '+(soundOn()?'sí':'no');if(!$('settings').hidden)buildSet()}
+function toggleMute(){var on=!soundOn();save.set.music=on;save.set.sfx=on;persist();syncSoundBtn()}
+$('mutebtn').onclick=toggleMute;
+var fsRoot=document.documentElement;
+function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement||null}
+function fsCan(){try{return !!((document.fullscreenEnabled||document.webkitFullscreenEnabled)&&(fsRoot.requestFullscreen||fsRoot.webkitRequestFullscreen))}catch(e){return false}}
+function toggleFs(){
+  if(!fsCan())return;
+  try{
+    if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}
+    else{var r=(fsRoot.requestFullscreen||fsRoot.webkitRequestFullscreen).call(fsRoot);if(r&&r.catch)r.catch(function(){})}
+  }catch(e){}
+}
+function syncFsBtn(){$('fsbtn').hidden=!fsCan();$('fsbtn').textContent=fsEl()?'Salir de pantalla completa':'Pantalla completa'}
+$('fsbtn').onclick=toggleFs;
+['fullscreenchange','webkitfullscreenchange'].forEach(function(ev){try{document.addEventListener(ev,function(){syncFsBtn();fit()})}catch(e){}});
+syncFsBtn();syncSoundBtn();
 window.addEventListener('pointerdown',unlock);
 window.addEventListener('keydown',function(e){
   unlock();
+  if(!e.ctrlKey&&!e.metaKey&&!e.altKey){
+    if(e.key==='m'||e.key==='M'){toggleMute()}
+    else if(e.key==='f'||e.key==='F'){toggleFs()}
+  }
   if(e.key==='p'||e.key==='P'||e.key==='Escape'){
     if(rgOpen())return;
     if(pz.modal){closeModal();return}
@@ -1060,14 +1085,14 @@ function buildSet(){
   $('setsfx').textContent='Efectos: '+(save.set.sfx?'sí':'no');
   $('setvib').textContent='Vibración: '+(save.set.vib?'sí':'no');
 }
-$('setmusic').onclick=function(){save.set.music=!save.set.music;persist();buildSet()};
-$('setsfx').onclick=function(){save.set.sfx=!save.set.sfx;persist();buildSet()};
+$('setmusic').onclick=function(){save.set.music=!save.set.music;persist();buildSet();syncSoundBtn()};
+$('setsfx').onclick=function(){save.set.sfx=!save.set.sfx;persist();buildSet();syncSoundBtn()};
 $('setvib').onclick=function(){save.set.vib=!save.set.vib;persist();buildSet();vibrate(40)};
 $('resetbtn').onclick=function(){$('resetask').hidden=false;this.hidden=true};
 $('resetno').onclick=function(){$('resetask').hidden=true;$('resetbtn').hidden=false};
 $('resetyes').onclick=function(){
   save=defSave();persist();hueT=targetHue();
-  buildSet();$('resetask').hidden=true;$('resetbtn').hidden=false;menuBest();hud();
+  buildSet();syncSoundBtn();$('resetask').hidden=true;$('resetbtn').hidden=false;menuBest();hud();
 };
 
 /* ---------- Iconos que caen ---------- */
@@ -2451,9 +2476,25 @@ function sprite(ic,x,y,rot,gold){
   else if(ic.kind==='power'){cx.shadowColor='#ffff66';cx.shadowBlur=16}
   cx.drawImage(ic.spr,-S/2,-S/2,S,S);cx.restore();
 }
-function label(t,x,y){
+/* Aura por tipo: lo que se corta no lleva aura; lo que hay que evitar, aro rojo discontinuo; ayudas, aro cian; dorados, aro amarillo. */
+var AURA={bad:['255,40,40','#ff4040'],power:['80,230,255','#60eaff'],gold:['255,224,64','#ffe040']};
+function aura(kind,gold,x,y,rot){
+  var k=gold?'gold':kind;if(!AURA[k])return;
+  var A=AURA[k],t=reduce?0:performance.now()/1000,p=k==='bad'&&!reduce?.78+.22*Math.sin(t*9):1,r=S*.66;
+  cx.save();cx.translate(x,y);
+  var g=cx.createRadialGradient(0,0,r*.25,0,0,r*1.15);
+  g.addColorStop(0,'rgba('+A[0]+',0)');g.addColorStop(.7,'rgba('+A[0]+','+(.32*p).toFixed(2)+')');g.addColorStop(1,'rgba('+A[0]+',0)');
+  cx.fillStyle=g;cx.beginPath();cx.arc(0,0,r*1.15,0,6.2832);cx.fill();
+  cx.lineWidth=3;cx.strokeStyle='#000000';
+  if(k==='bad'){cx.setLineDash([7,6]);cx.rotate(reduce?0:t*.9)}else if(k==='power')cx.setLineDash([2,5]);else cx.setLineDash([]);
+  cx.beginPath();cx.arc(0,0,r,0,6.2832);cx.stroke();
+  cx.lineWidth=1.6;cx.strokeStyle=A[1];cx.beginPath();cx.arc(0,0,r,0,6.2832);cx.stroke();
+  cx.restore();
+}
+function label(t,x,y,kind,gold){
   cx.font='11px Tahoma,Verdana,sans-serif';cx.textAlign='center';cx.textBaseline='middle';
-  cx.fillStyle='#000000';cx.fillText(t,x+1,y+1);cx.fillStyle='#ffffff';cx.fillText(t,x,y);
+  var col=gold?'#ffe040':kind==='bad'?'#ff8080':kind==='power'?'#80f0ff':'#ffffff';
+  cx.fillStyle='#000000';cx.fillText(t,x+1,y+1);cx.fillText(t,x-1,y+1);cx.fillStyle=col;cx.fillText(t,x,y);
 }
 function bigText(t,x,y,size,col){
   cx.font='bold '+size+'px Tahoma,Verdana,sans-serif';cx.textAlign='center';cx.textBaseline='middle';
@@ -2534,7 +2575,7 @@ function frame(now){
   if(shake>0)cx.translate(R(-1,1)*shake*16,R(-1,1)*shake*16);
   drawBoss();
   for(i=0;i<items.length;i++){var a=items[i];if(a.cut)continue;
-    sprite(a.ic,a.x,a.y,a.rot,a.gold);label(a.trap?'★ Regalo':(a.gold?'★ ':'')+a.ic.name,a.x,a.y+S/2+8);
+    aura(a.ic.kind,a.gold,a.x,a.y);sprite(a.ic,a.x,a.y,a.rot,a.gold);label(a.trap?'★ Regalo':(a.gold?'★ ':'')+a.ic.name,a.x,a.y+S/2+8,a.ic.kind,a.gold);
   }
   for(i=0;i<halves.length;i++){var q=halves[i];
     cx.save();cx.globalAlpha=Math.min(1,q.l);cx.translate(q.x,q.y);

@@ -1,0 +1,7 @@
+Tipo de proyecto: HTML
+Archivo: subir ninja-de-escritorio-html5.zip y marcar "This file will be played in the browser".
+Tamaño del visor: 960 x 600 (el juego se adapta; también funciona a otros tamaños).
+Botón de pantalla completa: activado.
+Compatible con móvil: sí (la orientación horizontal da más espacio).
+Marcar "Mobile friendly" en el panel de itch.io: sí.
+Cookies/almacenamiento: el juego usa localStorage para guardar el progreso y funciona igual si el navegador lo bloquea.
